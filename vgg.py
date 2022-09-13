@@ -175,7 +175,9 @@ def vgg19_bn(pretrained = False,**kwargs):
     return model
 
 if __name__ == "__main__":
-    model = vgg16(pretrained = False)
-    image = torch.randn(1,3,224,224)
-    logit = model(image)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    model = vgg16(pretrained = False).to(device)
+    image = torch.randn(1,3,224,224).to(device)
+    with torch.no_grad():
+        logit = model(image)
     print(logit.shape)
